@@ -6,7 +6,7 @@ const router = express.Router();
 router.get('/getPedidos',(req,res)=>{
     if(!req.query.idUsuario)  res.sendStatus(400)
     else{
-        var query = "SELECT * FROM pedidos where IdUsuario = " + connection.escape(req.query.idUsuario)
+        var query = "SELECT * FROM pedidos where IdUsuario = " + connection.escape(req.query.idUsuario) + " ORDER BY FechaPedido DESC"
         connection.query(query,(err,result,fields)=>{
             if(err) res.sendStatus(500);
             res.send(result)
