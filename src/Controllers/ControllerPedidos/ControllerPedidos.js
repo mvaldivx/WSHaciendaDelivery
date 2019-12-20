@@ -66,9 +66,9 @@ router.post('/GuardaDetallePedido',(req,res)=>{
 })
 
 router.get('/getPedido',(req,res)=>{
-    if(!req.body.params) res.sendStatus(400)
+    if(!req.query.IdPedido) res.sendStatus(400)
     else{
-        var query = "SELECT * FROM pedidos Where IdPedido=" + connection.escape(req.body.params.IdPedido)
+        var query = "SELECT * FROM pedidos Where IdPedido=" + connection.escape(req.query.IdPedido)
         connection.query(query,(err,result,fields)=>{
             if(err){
                 res.sendStatus(500)

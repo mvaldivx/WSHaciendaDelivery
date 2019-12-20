@@ -10,6 +10,8 @@ var routerPrincipal = require('./Controllers/ControllerPrincipal/ControllerPrinc
 var routerAuth = require('./Controllers/ControllerAuth/ControllerAuth.js');
 var routerPedidos = require('./Controllers/ControllerPedidos/ControllerPedidos.js');
 var routerPedidosAdmin = require('./Controllers/ControllerPedidosAdmin/ControllerPedidosAdmin.js');
+var routerCalificaciones = require('./Controllers/ControllerCalificaciones/ControllerCalificaciones.js');
+var routerDirecciones = require('./Controllers/ControllerDirecciones/ControllerDirecciones.js');
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -26,6 +28,8 @@ app.use('/Principal',routerPrincipal);
 app.use('/Auth',routerAuth);
 app.use('/Pedidos',routerPedidos);
 app.use('/PedidosAdmin',routerPedidosAdmin);
+app.use('/Calificaciones',routerCalificaciones);
+app.use('/Direcciones',routerDirecciones);
 
 app.io = io;
   
