@@ -19,7 +19,7 @@ router.post('/registrarUsuario',(req,res)=>{
     if(!req.body.params)  res.sendStatus(400)
     else{
         var params=  req.body.params.usuario
-        var fechaRegistro = new Date(params.fechaRegistro)
+        var fechaRegistro = new Date(params.registradoEl)
         var fechanacimiento = new Date(params.FechaNacimiento)
         var query = "INSERT INTO usuarios (UID,Nombre,registradoEl,Fechanacimiento,telefono) VALUES ("
         + connection.escape(params.UID) + ',' + connection.escape(params.Nombre) + 
@@ -54,7 +54,7 @@ router.get('/getPlayerId',(req,res)=>{
 router.post('/InsertPlayerId',(req,res)=>{
     if(!req.body.params.IdUsuario)  res.sendStatus(400)
     else{
-        var query = "INSERT INTO playerid (idUsuario,playerId) VALUES (" + connection.escape(req.body.params.IdUsuario) 
+        var query = "INSERT INTO playerid (IdUsuario,playerId) VALUES (" + connection.escape(req.body.params.IdUsuario) 
         + ',' + connection.escape(req.body.params.playerId) + ')' 
         connection.query(query,(err,result,fields)=>{
             if(err){

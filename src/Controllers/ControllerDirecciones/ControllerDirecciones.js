@@ -23,7 +23,7 @@ router.get('/buscaDireccionReplicada',(req,res) =>{
     else{
         var query = "SELECT * FROM direcciones where IdUsuario" + req.query.IdUsuario
          + " AND Calle = " + req.query.Calle 
-         + " AND Numero = " + + req.query.Numero
+         + " AND Numero = " + req.query.Numero
         connection.query(query,(err,result,fields)=>{
             if(err){
                 console.log(err)
@@ -77,6 +77,22 @@ router.post('/CambiarEstatusDefault',(req,res) => {
             } 
             res.send(result)
         })
+    }
+})
+
+router.post('/EliminarDireccion',(req,res) => {
+    if(!req.body.params) res.sendStatus(400)
+    else{
+        var params = req.body.params
+        var query = "DELETE FROM direcciones where IdDireccion = " + connection.escape(params.IdDireccion) 
+        + " AND IdUsuario = " + connection.escape(params.IdUsuario)
+        connection.query(query,(err,result,fields) =>{
+            if(err){
+                console.log('EliminarDireccion',err,params)
+                res.sendStatus(500)
+            }
+            res.send(result)
+        }) 
     }
 })
 

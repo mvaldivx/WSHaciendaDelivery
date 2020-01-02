@@ -18,5 +18,4 @@ router.get('/getResenias',(req,res)=>{
     }
 })
 
-
 module.exports = router;
