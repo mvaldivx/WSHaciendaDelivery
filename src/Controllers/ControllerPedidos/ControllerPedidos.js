@@ -81,9 +81,17 @@ router.get('/getPedido',(req,res)=>{
 router.get('/getDetallePedido',(req,res)=>{
     if(!req.query.IdPedido) res.sendStatus(400)
     else{
-        var query = "SELECT * FROM detallepedido Where IdPedido=" + connection.escape(req.query.IdPedido)
+        var query = "SELECT dp.IdPedido, dp.IdNegocio, dp.IdProducto,"
+        + " dp.Precio, dp.ComentsAdi, dp.Cantidad, SUM(IF(rs.idPedido IS NULL, 0, 1)) As calificado"
+        + " FROM detallepedido dp "
+        + " left join resenias rs ON dp.IdPedido = rs.IdPedido "
+        + "Where dp.IdPedido=" + connection.escape(req.query.IdPedido)
+        + " GROUP BY dp.IdPedido, dp.IdNegocio, dp.IdProducto,"
+        + " dp.Precio, dp.ComentsAdi, dp.Cantidad"
+        
         connection.query(query,(err,result,fields)=>{
             if(err){
+                console.log('ControllerPedidos','getDetallePedido',err.sqlMessage )
                 res.sendStatus(500)
             }
             res.send(result)
