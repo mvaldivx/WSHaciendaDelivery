@@ -12,6 +12,7 @@ var routerPedidos = require('./Controllers/ControllerPedidos/ControllerPedidos.j
 var routerPedidosAdmin = require('./Controllers/ControllerPedidosAdmin/ControllerPedidosAdmin.js');
 var routerCalificaciones = require('./Controllers/ControllerCalificaciones/ControllerCalificaciones.js');
 var routerDirecciones = require('./Controllers/ControllerDirecciones/ControllerDirecciones.js');
+var routerAnuncios = require('./Controllers/ControllerAnuncios/ControllerAnuncios.js');
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -30,6 +31,7 @@ app.use('/Pedidos',routerPedidos);
 app.use('/PedidosAdmin',routerPedidosAdmin);
 app.use('/Calificaciones',routerCalificaciones);
 app.use('/Direcciones',routerDirecciones);
+app.use('/Anuncios',routerAnuncios);
 
 app.io = io;
   

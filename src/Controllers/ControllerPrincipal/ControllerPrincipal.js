@@ -24,6 +24,7 @@ router.get('/getNegocios',(req,res)=>{
         + " FROM negocios n " 
         + " LEFT JOIN resenias r ON n.IdNegocio = r.IdNegocio"  
         + " Where IdCategoria=" + connection.escape(req.query.idCategoria)
+        + " AND Estatus = 1"
         + " GROUP BY n.IdCategoria, n.IdNegocio, n.Descripcion, n.Estatus, n.Negocio) AS  Calif"
         connection.query(query,(err,result,fields)=>{
             if(err){
@@ -40,6 +41,7 @@ router.get('/getProductos',(req,res)=>{
     else{
         var query = "SELECT IdProducto, IdNegocio ,Precio, Producto, Descripcion FROM productos WHERE idNegocio=" 
         + connection.escape(req.query.idNegocio)
+        + " AND Estatus = 1"
         connection.query(query,(err,result,fields)=>{
             if(err) res.sendStatus(500)
             res.send(result)
