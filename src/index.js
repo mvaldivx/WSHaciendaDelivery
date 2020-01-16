@@ -13,6 +13,7 @@ var routerPedidosAdmin = require('./Controllers/ControllerPedidosAdmin/Controlle
 var routerCalificaciones = require('./Controllers/ControllerCalificaciones/ControllerCalificaciones.js');
 var routerDirecciones = require('./Controllers/ControllerDirecciones/ControllerDirecciones.js');
 var routerAnuncios = require('./Controllers/ControllerAnuncios/ControllerAnuncios.js');
+var routerCategoriasAdmin = require('./Controllers/ControllerCategoriasAdmin/ControllerCategoriasAdmin.js');
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -32,6 +33,7 @@ app.use('/PedidosAdmin',routerPedidosAdmin);
 app.use('/Calificaciones',routerCalificaciones);
 app.use('/Direcciones',routerDirecciones);
 app.use('/Anuncios',routerAnuncios);
+app.use('/CategoriasAdmin',routerCategoriasAdmin);
 
 app.io = io;
   
@@ -40,6 +42,6 @@ io.on('connection',()=>{
 })
 
 
-var server = http.listen(3000, ()=>{
+var server = http.listen(3030, ()=>{
     console.log('server is running on port', server.address().port);
   });
