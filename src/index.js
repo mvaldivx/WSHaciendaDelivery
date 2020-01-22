@@ -15,16 +15,32 @@ var routerDirecciones = require('./Controllers/ControllerDirecciones/ControllerD
 var routerAnuncios = require('./Controllers/ControllerAnuncios/ControllerAnuncios.js');
 var routerCategoriasAdmin = require('./Controllers/ControllerCategoriasAdmin/ControllerCategoriasAdmin.js');
 
+var validateApiKey = require('./Auth/Authentication.module.js');
+
+function Authentication(req){
+  if((req.complete) &&(!validateApiKey(req.headers.authorization))){
+    return false
+  } else{
+    return true
+  }
+  
+}
+
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Origin", "http://localhost:8100","*", "http://localhost:4200"); // update to match the domain you will make the request from
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
+    if(Authentication(req))
+      next();
+    else
+      res.sendStatus(401)
 });
 
 app.use(express.static(__dirname));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}))
+
+
 
 app.use('/Principal',routerPrincipal);
 app.use('/Auth',routerAuth);

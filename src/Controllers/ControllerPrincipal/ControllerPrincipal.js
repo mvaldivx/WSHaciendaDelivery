@@ -1,6 +1,7 @@
 var connection = require("../../connection.js");
 var express = require('express');
 
+
 const router = express.Router();
 
 router.get('/getCategorias',(req,res)=>{
