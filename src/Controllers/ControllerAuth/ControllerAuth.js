@@ -54,8 +54,8 @@ router.get('/getPlayerId',(req,res)=>{
 router.post('/InsertPlayerId',(req,res)=>{
     if(!req.body.params.IdUsuario)  res.sendStatus(400)
     else{
-        var query = "INSERT INTO playerid (IdUsuario,playerId) VALUES (" + connection.escape(req.body.params.IdUsuario) 
-        + ',' + connection.escape(req.body.params.playerId) + ')' 
+        var query = "INSERT INTO playerid  SELECT u.IdUsuario, " + connection.escape(req.body.params.playerId)
+        + " FROM usuarios u Where u.IdUsuario = " + connection.escape(req.body.params.IdUsuario) 
         connection.query(query,(err,result,fields)=>{
             if(err){
                 console.log(err)
