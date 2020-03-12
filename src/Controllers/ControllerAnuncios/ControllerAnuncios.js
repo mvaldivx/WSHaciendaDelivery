@@ -67,7 +67,10 @@ router.post('/NuevoAnuncio',(req,res)=>{
                             + connection.escape(param.IdUsuario) + " , "
                             + connection.escape(result.insertId) + ")"
                             connection.query(insertanNegocioUsuario,(err,result2,fields)=>{
-                                if(err) console.log( 'registrando negocio', err.sqlMessage)
+                                if(err){
+                                    console.log( 'registrando negocio', err.sqlMessage)
+                                    res.sendStatus(500)
+                                } 
                                 else{
                                     var queryinsert = "INSERT INTO productosenrevision (IdUsuario, Negocio,Categoria, Precio "
                                     +   ", Producto, Descripcion, Estatus, Comentarios ) Values ( "
@@ -92,38 +95,39 @@ router.post('/NuevoAnuncio',(req,res)=>{
                     })
                 }
             })
-        }
-        if(negocioExistente){
-            res.send({success:false,message:'Ya existe un negocio registrado con el mismo nombre'});
         }else{
-        //Valida si ya tiene registrado el mismo producto
-            var buscaExistentes = "SELECT SUM(registros) as registros FROM ( "
-            + " SELECT COUNT(n.IdNegocio) as registros FROM negocios n join productos p on n.IdNegocio = n.IdNegocio"
-            + " WHERE n.IdNegocio = " + connection.escape(param.Negocio)
-            + " AND p.Producto = " + connection.escape(param.Producto)
-            + " UNION "
-            + " SELECT COUNT(Negocio) as registros FROM productosenrevision where Negocio = "
-            + connection.escape(param.Negocio) + " AND Producto = "
-            + connection.escape(param.Producto)
-            + " ) suma"
-            connection.query(buscaExistentes,(err,result,fields)=>{
-                if(err){
-                    console.log('ControllerAnuncios','insertaNuevoAnuncio',param,err.sqlMessage)
-                    res.sendStatus(500)
-                }
-                if(result[0].registros > 0){
-                    res.send({success:false,message:'Ya tienes un anuncio igual registrado.'});
-                }else{
-                    var query = "INSERT INTO productosenrevision SET ?"
-                    connection.query(query,param,(err,result2,fields)=>{
-                        if(err){ 
-                            console.log('ControllerAnuncios','insertaNuevoAnuncio',info,err.sqlMessage)
-                            res.sendStatus(500)
-                        } 
-                        res.send({success:true,message:'Registrado correctamente.', IdNegocio: param.Negocio, IdProducto: result2.insertId})
-                    })
-                }
-            })
+            if(negocioExistente){
+                res.send({success:false,message:'Ya existe un negocio registrado con el mismo nombre'});
+            }else{
+            //Valida si ya tiene registrado el mismo producto
+                var buscaExistentes = "SELECT SUM(registros) as registros FROM ( "
+                + " SELECT COUNT(n.IdNegocio) as registros FROM negocios n join productos p on n.IdNegocio = n.IdNegocio"
+                + " WHERE n.IdNegocio = " + connection.escape(param.Negocio)
+                + " AND p.Producto = " + connection.escape(param.Producto)
+                + " UNION "
+                + " SELECT COUNT(Negocio) as registros FROM productosenrevision where Negocio = "
+                + connection.escape(param.Negocio) + " AND Producto = "
+                + connection.escape(param.Producto)
+                + " ) suma"
+                connection.query(buscaExistentes,(err,result,fields)=>{
+                    if(err){
+                        console.log('ControllerAnuncios','insertaNuevoAnuncio',param,err.sqlMessage)
+                        res.sendStatus(500)
+                    }
+                    if(result && result[0].registros > 0){
+                        res.send({success:false,message:'Ya tienes un anuncio igual registrado.'});
+                    }else{
+                        var query = "INSERT INTO productosenrevision SET ?"
+                        connection.query(query,param,(err,result2,fields)=>{
+                            if(err){ 
+                                console.log('ControllerAnuncios','insertaNuevoAnuncio',info,err.sqlMessage)
+                                res.sendStatus(500)
+                            } 
+                            res.send({success:true,message:'Registrado correctamente.', IdNegocio: param.Negocio, IdProducto: result2.insertId})
+                        })
+                    }
+                })
+            }
         }
     }
 })
